@@ -1,0 +1,133 @@
+import math
+
+def erlang_c_probability(A, c):
+    """
+    Calculate the Erlang C probability that an incoming call has to wait
+    (i.e., all agents are busy).
+    
+    :param A: Offered load (Erlangs) = arrival_rate * AHT
+    :param c: Number of agents
+    :return: Erlang C probability (float)
+    """
+    # Check for edge cases
+    if c <= 0 or A <= 0:
+        return 0.0
+
+    # Calculate (A^n / n!) for n = 0..c
+    # We'll store these factorial terms for reuse
+    fact_terms = []
+    for n in range(c+1):
+        fact_terms.append(A**n / math.factorial(n))
+    
+    # Calculate the sum from n=0 to c-1
+    sum_ = sum(fact_terms[:c])
+    
+    # The term for n=c
+    c_term = fact_terms[c]
+    
+    # Utilization
+    rho = A / c
+    
+    # If c == A, formula tends to blow up; handle carefully
+    if abs(c - A) < 1e-9:
+        # Return approximate
+        return 1.0
+    
+    # Erlang C formula
+    erlang_c_num = c_term * (c / (c - A))
+    erlang_c_den = sum_ + erlang_c_num
+    
+    return erlang_c_num / erlang_c_den
+
+
+def average_speed_of_answer(A, c, AHT):
+    """
+    Compute the Average Speed of Answer (ASA) using Erlang C.
+    
+    :param A: Offered load (Erlangs)
+    :param c: Number of agents
+    :param AHT: Average Handling Time (in the same time units used for A)
+    :return: ASA (in the same time units as AHT)
+    """
+    if c <= A:  
+        # If offered load >= number of agents, ASA can be very high (or infinite)
+        return float('inf')
+    
+    C = erlang_c_probability(A, c)
+    
+    # ASA = ErlangC * (AHT / (c - A))
+    return C * (AHT / (c - A))
+
+
+def service_level_probability(A, c, AHT, T):
+    """
+    Approximate the probability that a call is answered within time T.
+    
+    :param A: Offered load (Erlangs)
+    :param c: Number of agents
+    :param AHT: Average handling time
+    :param T: Target time threshold for SLA
+    :return: Probability (0..1)
+    """
+    if c <= A:
+        return 0.0
+    
+    C = erlang_c_probability(A, c)
+    rho = A / c
+    mu = 1.0 / AHT  # service rate
+    
+    # The exponent = -(c - A) * mu * T
+    # Probability that a call waits: C * exp( - (c-A)*mu*T )
+    # Probability that a call is answered by T = 1 - that wait probability
+    # This formula is an approximation but often used in WFM contexts.
+    exponent = -(c - A) * mu * T
+    wait_prob = C * math.exp(exponent)
+    
+    return 1.0 - wait_prob
+
+def main():
+    """
+    Simple command-line driver for the Erlang C calculator.
+    Asks the user for call volume, average handling time, and number of agents.
+    """
+    # Example: Inputs
+    print("=== Erlang C Calculator ===\n")
+    
+    # 1) Arrival rate: calls per hour
+    # 2) AHT: in hours, or convert from seconds/minutes to hours
+    # 3) Number of agents
+    # 4) Target service level threshold (T) in hours (if you want to measure SL)
+    
+    # For demonstration, let's assume calls/hour, AHT in minutes, T in seconds
+    calls_per_hour = float(input("Enter call arrival rate (calls/hour): "))
+    avg_handling_time_minutes = float(input("Enter Average Handling Time (AHT) in minutes: "))
+    num_agents = int(input("Enter number of agents (c): "))
+    target_threshold_seconds = float(input("Enter SLA threshold (seconds): "))
+    
+    # Convert AHT from minutes to hours
+    AHT_hours = avg_handling_time_minutes / 60.0
+    
+    # Offered Load A
+    A = calls_per_hour * AHT_hours
+    
+    # Compute the metrics
+    erlangC = erlang_c_probability(A, num_agents)
+    asa = average_speed_of_answer(A, num_agents, AHT_hours)
+    
+    # Service level probability that calls are answered within T
+    # Convert target_threshold_seconds to hours
+    T_hours = target_threshold_seconds / 3600.0
+    sl = service_level_probability(A, num_agents, AHT_hours, T_hours)
+    
+    # Print the results
+    print("\n=== Results ===")
+    print(f"Offered Load (A)       = {A:.3f} Erlangs")
+    print(f"Utilization (rho)     = {A / num_agents:.3f}")
+    print(f"Erlang C Probability  = {erlangC:.3f}")
+    print(f"ASA (hours)           = {asa:.4f} (≈ {asa * 3600:.2f} seconds)")
+    print(f"Service Level (SL)    = {sl * 100:.2f}% (for T = {target_threshold_seconds}s)")
+    print("=======================\n")
+
+
+if __name__ == "__main__":
+    main()
