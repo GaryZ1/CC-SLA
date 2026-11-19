@@ -1,0 +1,29 @@
+schema_version: source_contract/1.0.0
+source_id: SRCDB.core.txn               # the table the authoritative code reads as core.txn
+evidence_status: SYNTHETIC              # proposed contract for the demo; not a discovered table
+engine: {kind: UNKNOWN, reason: "Synthetic stand-in behaves like a SQL Server-family database: case-insensitive collation, trailing spaces ignored in comparisons", question: Q-14}
+owner: {kind: UNKNOWN, reason: "synthetic example", question: Q-06}
+delivery_mode: CDC                      # synthetic: change table with a monotonic change version
+grain: [txn_id, source_seq]             # one row per version of a payment attempt
+business_keys: [txn_id]
+ordering: "source_seq (change version) strictly increasing per txn_id"
+delete_representation: "op = 'D' rows in the change table"
+event_timestamp: event_ts
+update_timestamp: source_seq
+history_available: "Change versions kept 7 days at source (synthetic); Bronze keeps every extracted version"
+extraction_boundary: "Window (lower, upper] on change version; upper bound read before the data"
+fixture: fixtures/synthetic/banking/windows/*/core_txn_changes.csv
+columns:
+  - {name: txn_id,     logical_type: TEXT,          nullable: false, classification: INTERNAL}
+  - {name: account_id, logical_type: TEXT,          nullable: false, classification: CONFIDENTIAL, meaning: "Leading zeros are significant"}
+  - {name: status,     logical_type: TEXT,          nullable: true,  classification: INTERNAL,
+     domain: null, observed_values: [COMPLETED, FAILED, CANCELLED_BY_CUSTOMER],
+     meaning: "Unexpected values are kept (the authoritative code counts them) and raise DQ-STS-01"}
+  - {name: amount,     logical_type: "DECIMAL(18,2)", nullable: false, classification: CONFIDENTIAL}
+  - {name: currency,   logical_type: TEXT,          nullable: false, classification: INTERNAL,
+     observed_values: [CAD], meaning: "Guard DQ-CCY-01 fails the MET-0002 release if a non-CAD value appears (RISK-0002-01)"}
+  - {name: event_ts,   logical_type: TIMESTAMP_NTZ, nullable: false, timezone: "local wall time, America/Toronto, no offset (synthetic; Q-16)",
+     meaning: "When the attempt was initiated", classification: INTERNAL}
+  - {name: txn_date,   logical_type: DATE,          nullable: false, classification: INTERNAL, meaning: "Date part of event_ts, maintained by the source"}
+  - {name: source_seq, logical_type: BIGINT,        nullable: false, classification: INTERNAL}
+  - {name: op,         logical_type: TEXT,          nullable: false, domain: [I, U, D], classification: INTERNAL}

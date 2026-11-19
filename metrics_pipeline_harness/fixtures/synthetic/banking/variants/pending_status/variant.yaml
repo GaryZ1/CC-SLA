@@ -1,0 +1,5 @@
+variant: pending_status
+base: windows/window_1
+table: core_txn_changes
+operation: append
+tests: "Code counts an unknown status in the denominator (TR-03, D-02): 2026-03-07 / 000123 becomes 1/4 (MS-12)"

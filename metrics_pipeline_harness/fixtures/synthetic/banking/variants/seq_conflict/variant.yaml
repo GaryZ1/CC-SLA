@@ -1,0 +1,5 @@
+variant: seq_conflict
+base: windows/window_1
+table: core_txn_changes
+operation: append
+tests: "T002 seq 2 delivered twice with different amounts: both quarantined CDC_SEQUENCE_CONFLICT (PB-06)"

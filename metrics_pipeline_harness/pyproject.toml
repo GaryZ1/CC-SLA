@@ -1,0 +1,66 @@
+[project]
+name = "metrics-pipeline-harness"
+version = "0.1.0"
+description = "Build harness that turns an Excel inventory of metric definitions into reviewed, deterministic SQL pipelines."
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "openpyxl==3.1.5",
+    "defusedxml==0.7.1",
+    "pydantic==2.14.3",
+    "pyyaml==6.0.3",
+    "sqlglot==30.33.0",
+]
+
+[project.scripts]
+harness = "harness.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest==9.2.0",
+    "hypothesis==6.170.15",
+    "ruff==0.17.5",
+    "mypy==2.4.1",
+    "types-PyYAML==6.0.12.20261113",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/harness"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+extend-exclude = ["fixtures/synthetic/banking/*.xlsx"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "S", "SIM", "RUF"]
+ignore = [
+    "S101",   # assert is fine in tests
+    "RUF001", # ambiguous unicode in strings is intentional evidence text
+    "RUF012", # pydantic copies mutable defaults per instance
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S", "B011"]
+"fixtures/**" = ["S"]
+
+[tool.mypy]
+strict = true
+python_version = "3.12"
+plugins = ["pydantic.mypy"]
+mypy_path = "src"
+
+[[tool.mypy.overrides]]
+module = ["openpyxl", "openpyxl.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+markers = [
+    "slow: spawns subprocesses or builds large inputs",
+]

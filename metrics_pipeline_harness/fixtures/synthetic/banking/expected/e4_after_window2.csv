@@ -1,0 +1,15 @@
+assertion,expected
+fact_transaction_rebuilt_date_keys,20260308
+amount_2026-03-08_000456_SAV-HIGH,307.50
+count_2026-03-08_000456_SAV-HIGH,2
+rate_2026-03-08_000456_SAV-HIGH,1.00000000000000000
+total_amount_2026-03-08,347.50
+period_total_amount,507.50
+period_total_count,5
+period_rate,0.71428571428571429
+unchanged_date_keys,20260307;20260309
+t001_reread,same bronze_record_id; no new bronze row; silver.txn unchanged; no quarantine row
+rerun_window_2,manifest already COMMITTED; no table changes
+balancing_window_1,8 bronze = 8 accepted + 0 quarantined + 0 suppressed
+balancing_window_2,1 new bronze row (T005 seq 9) = 1 accepted; T001 re-read matched an existing bronze row
+restatement_log,MET-0002 2026-03-08 cause SRCDB.core.txn T005 seq 9

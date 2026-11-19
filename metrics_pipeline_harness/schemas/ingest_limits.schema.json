@@ -1,0 +1,159 @@
+{
+  "$defs": {
+    "InclusionRules": {
+      "additionalProperties": false,
+      "properties": {
+        "comments": {
+          "const": "extract",
+          "title": "Comments",
+          "type": "string"
+        },
+        "external_links": {
+          "const": "record_only",
+          "title": "External Links",
+          "type": "string"
+        },
+        "hidden_columns": {
+          "enum": [
+            "extract_and_flag",
+            "exclude_and_report"
+          ],
+          "title": "Hidden Columns",
+          "type": "string"
+        },
+        "hidden_rows": {
+          "enum": [
+            "extract_and_flag",
+            "exclude_and_report"
+          ],
+          "title": "Hidden Rows",
+          "type": "string"
+        },
+        "hidden_sheets": {
+          "enum": [
+            "extract_and_flag",
+            "exclude_and_report"
+          ],
+          "title": "Hidden Sheets",
+          "type": "string"
+        },
+        "hyperlinks": {
+          "const": "record_target_only",
+          "title": "Hyperlinks",
+          "type": "string"
+        },
+        "very_hidden_sheets": {
+          "enum": [
+            "extract_and_flag",
+            "exclude_and_report"
+          ],
+          "title": "Very Hidden Sheets",
+          "type": "string"
+        }
+      },
+      "required": [
+        "hidden_sheets",
+        "very_hidden_sheets",
+        "hidden_rows",
+        "hidden_columns",
+        "comments",
+        "hyperlinks",
+        "external_links"
+      ],
+      "title": "InclusionRules",
+      "type": "object"
+    },
+    "IngestLimits": {
+      "additionalProperties": false,
+      "properties": {
+        "max_cell_chars": {
+          "exclusiveMinimum": 0,
+          "title": "Max Cell Chars",
+          "type": "integer"
+        },
+        "max_columns_per_sheet": {
+          "exclusiveMinimum": 0,
+          "title": "Max Columns Per Sheet",
+          "type": "integer"
+        },
+        "max_compression_ratio": {
+          "exclusiveMinimum": 0,
+          "title": "Max Compression Ratio",
+          "type": "integer"
+        },
+        "max_file_bytes": {
+          "exclusiveMinimum": 0,
+          "title": "Max File Bytes",
+          "type": "integer"
+        },
+        "max_rows_per_sheet": {
+          "exclusiveMinimum": 0,
+          "title": "Max Rows Per Sheet",
+          "type": "integer"
+        },
+        "max_sheets": {
+          "exclusiveMinimum": 0,
+          "title": "Max Sheets",
+          "type": "integer"
+        },
+        "max_uncompressed_bytes": {
+          "exclusiveMinimum": 0,
+          "title": "Max Uncompressed Bytes",
+          "type": "integer"
+        },
+        "max_zip_entries": {
+          "exclusiveMinimum": 0,
+          "title": "Max Zip Entries",
+          "type": "integer"
+        },
+        "parse_memory_mb": {
+          "exclusiveMinimum": 0,
+          "title": "Parse Memory Mb",
+          "type": "integer"
+        },
+        "parse_timeout_seconds": {
+          "exclusiveMinimum": 0,
+          "title": "Parse Timeout Seconds",
+          "type": "number"
+        }
+      },
+      "required": [
+        "max_file_bytes",
+        "max_uncompressed_bytes",
+        "max_zip_entries",
+        "max_compression_ratio",
+        "max_sheets",
+        "max_rows_per_sheet",
+        "max_columns_per_sheet",
+        "max_cell_chars",
+        "parse_timeout_seconds",
+        "parse_memory_mb"
+      ],
+      "title": "IngestLimits",
+      "type": "object"
+    }
+  },
+  "$id": "metrics_pipeline_harness/ingest_limits.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "inclusion": {
+      "$ref": "#/$defs/InclusionRules"
+    },
+    "limits": {
+      "$ref": "#/$defs/IngestLimits"
+    },
+    "schema_version": {
+      "const": "ingest_limits/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "limits",
+    "inclusion"
+  ],
+  "title": "IngestConfig",
+  "type": "object"
+}

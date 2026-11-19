@@ -1,0 +1,6 @@
+variant: lowercase_status
+base: windows/window_1
+table: core_txn_changes
+operation: replace
+key: [txn_id, source_seq]
+tests: "T001 status stored as 'completed ' (lowercase, trailing space): still COMPLETED under TR-03 (MS-14)"

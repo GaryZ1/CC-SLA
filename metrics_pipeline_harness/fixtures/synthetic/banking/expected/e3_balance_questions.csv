@@ -1,0 +1,7 @@
+question,result,method
+total_balance_2026-03-07,6000.00,SUM across accounts on the same date
+total_balance_2026-03-08,6285.50,SUM across accounts on the same date
+total_balance_2026-03-09,900.00,SUM across accounts on the same date (000456 has no row; RISK-0004-01)
+period_end_balance_2026-03-07..09,BLOCKED,DSC-0004-02 needs a missing-day rule
+average_daily_balance_2026-03-07..09,BLOCKED,DSC-0004-02 needs a missing-day rule
+sum_over_days_2026-03-07..09,13185.50,FORBIDDEN: rejected by V-05 and the planner

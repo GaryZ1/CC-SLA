@@ -1,0 +1,9 @@
+grain,group_key,transaction_count,transaction_amount_cad,completion_numerator,completion_denominator,payment_completion_rate
+code_grain,2026-03-08|000123,1,40.00,1,1,1.00000000000000000
+business_date,2026-03-07,1,100.00,1,3,0.33333333333333333
+business_date,2026-03-08,3,365.50,3,3,1.00000000000000000
+business_date,2026-03-09,1,60.00,1,1,1.00000000000000000
+product,CHQ-BASIC,2,140.00,2,4,0.50000000000000000
+product,CHQ-PLUS,1,60.00,1,1,1.00000000000000000
+product,SAV-HIGH,2,325.50,2,2,1.00000000000000000
+total,all,5,525.50,5,7,0.71428571428571429

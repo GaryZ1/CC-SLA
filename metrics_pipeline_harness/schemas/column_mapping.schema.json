@@ -1,0 +1,240 @@
+{
+  "$defs": {
+    "FieldMapping": {
+      "additionalProperties": false,
+      "properties": {
+        "aliases": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Aliases",
+          "type": "array"
+        },
+        "empty_severity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Severity"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "missing_severity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Severity"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "required": {
+          "title": "Required",
+          "type": "boolean"
+        },
+        "type": {
+          "$ref": "#/$defs/FieldType"
+        }
+      },
+      "required": [
+        "aliases",
+        "type",
+        "required"
+      ],
+      "title": "FieldMapping",
+      "type": "object"
+    },
+    "FieldOverride": {
+      "additionalProperties": false,
+      "properties": {
+        "aliases": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Aliases",
+          "type": "array"
+        }
+      },
+      "required": [
+        "aliases"
+      ],
+      "title": "FieldOverride",
+      "type": "object"
+    },
+    "FieldType": {
+      "enum": [
+        "identifier",
+        "text",
+        "code"
+      ],
+      "title": "FieldType",
+      "type": "string"
+    },
+    "MappingDefaults": {
+      "additionalProperties": false,
+      "properties": {
+        "code_dialect_candidates": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Code Dialect Candidates",
+          "type": "array"
+        },
+        "empty_values": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Empty Values",
+          "type": "array"
+        },
+        "header_search_rows": {
+          "pattern": "^[1-9][0-9]*-[1-9][0-9]*$",
+          "title": "Header Search Rows",
+          "type": "string"
+        },
+        "multirow_header_joiner": {
+          "title": "Multirow Header Joiner",
+          "type": "string"
+        }
+      },
+      "required": [
+        "header_search_rows",
+        "multirow_header_joiner",
+        "empty_values",
+        "code_dialect_candidates"
+      ],
+      "title": "MappingDefaults",
+      "type": "object"
+    },
+    "Severity": {
+      "enum": [
+        "BLOCKER",
+        "MAJOR",
+        "MINOR",
+        "INFO"
+      ],
+      "title": "Severity",
+      "type": "string"
+    },
+    "SheetOverride": {
+      "additionalProperties": false,
+      "properties": {
+        "fields": {
+          "additionalProperties": {
+            "$ref": "#/$defs/FieldOverride"
+          },
+          "default": {},
+          "title": "Fields",
+          "type": "object"
+        },
+        "header_row": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Header Row"
+        },
+        "header_rows": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Header Rows"
+        }
+      },
+      "title": "SheetOverride",
+      "type": "object"
+    },
+    "SheetSelection": {
+      "additionalProperties": false,
+      "properties": {
+        "exclude": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude",
+          "type": "array"
+        },
+        "include": {
+          "default": [
+            "*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Include",
+          "type": "array"
+        },
+        "overrides": {
+          "additionalProperties": {
+            "$ref": "#/$defs/SheetOverride"
+          },
+          "default": {},
+          "title": "Overrides",
+          "type": "object"
+        }
+      },
+      "title": "SheetSelection",
+      "type": "object"
+    }
+  },
+  "$id": "metrics_pipeline_harness/column_mapping.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "defaults": {
+      "$ref": "#/$defs/MappingDefaults"
+    },
+    "fields": {
+      "additionalProperties": {
+        "$ref": "#/$defs/FieldMapping"
+      },
+      "title": "Fields",
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "column_mapping/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "sheets": {
+      "$ref": "#/$defs/SheetSelection",
+      "default": {
+        "exclude": [],
+        "include": [
+          "*"
+        ],
+        "overrides": {}
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "defaults",
+    "fields"
+  ],
+  "title": "ColumnMapping",
+  "type": "object"
+}

@@ -1,0 +1,1078 @@
+{
+  "$defs": {
+    "Access": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_read_sources": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Allowed Read Sources",
+          "type": "array"
+        },
+        "allowed_write_targets": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Allowed Write Targets",
+          "type": "array"
+        }
+      },
+      "required": [
+        "allowed_read_sources",
+        "allowed_write_targets"
+      ],
+      "title": "Access",
+      "type": "object"
+    },
+    "Approvals": {
+      "additionalProperties": false,
+      "properties": {
+        "automatic_repair_limit": {
+          "maximum": 3,
+          "minimum": 0,
+          "title": "Automatic Repair Limit",
+          "type": "integer"
+        },
+        "deployment_approval_required": {
+          "const": true,
+          "title": "Deployment Approval Required",
+          "type": "boolean"
+        },
+        "metric_semantics_approval_required": {
+          "const": true,
+          "title": "Metric Semantics Approval Required",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "deployment_approval_required",
+        "metric_semantics_approval_required",
+        "automatic_repair_limit"
+      ],
+      "title": "Approvals",
+      "type": "object"
+    },
+    "AuthorityPolicy": {
+      "enum": [
+        "CODE",
+        "ENGLISH",
+        "PER_METRIC_OWNER_DECISION"
+      ],
+      "title": "AuthorityPolicy",
+      "type": "string"
+    },
+    "Decision": {
+      "additionalProperties": false,
+      "properties": {
+        "answer": {
+          "title": "Answer",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^D-[0-9]{2}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "interpretation": {
+          "title": "Interpretation",
+          "type": "string"
+        },
+        "question": {
+          "pattern": "^Q-[0-9]{2}[a-z]?$",
+          "title": "Question",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "question",
+        "answer",
+        "interpretation"
+      ],
+      "title": "Decision",
+      "type": "object"
+    },
+    "Governance": {
+      "additionalProperties": false,
+      "properties": {
+        "approvers": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "type": "object"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Approvers"
+        },
+        "ci_platform": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Ci Platform"
+        },
+        "classification": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Classification"
+        },
+        "data_residency": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Data Residency"
+        },
+        "existing_standards": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Existing Standards"
+        },
+        "gold_consumers": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Gold Consumers"
+        },
+        "retention": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Retention"
+        }
+      },
+      "required": [
+        "ci_platform",
+        "approvers",
+        "gold_consumers",
+        "existing_standards",
+        "retention",
+        "data_residency",
+        "classification"
+      ],
+      "title": "Governance",
+      "type": "object"
+    },
+    "Inputs": {
+      "additionalProperties": false,
+      "properties": {
+        "data_dictionaries": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Data Dictionaries"
+        },
+        "reference_code": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Reference Code"
+        },
+        "repository": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Repository"
+        },
+        "sample_data": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Sample Data"
+        },
+        "source_schemas": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Source Schemas"
+        },
+        "workbook_paths": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Workbook Paths",
+          "type": "array"
+        }
+      },
+      "required": [
+        "workbook_paths",
+        "source_schemas",
+        "data_dictionaries",
+        "reference_code",
+        "sample_data",
+        "repository"
+      ],
+      "title": "Inputs",
+      "type": "object"
+    },
+    "LlmPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "approved_provider_and_model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Approved Provider And Model"
+        },
+        "permitted_llm_data": {
+          "enum": [
+            "none",
+            "metadata_only_until_authorized",
+            "metadata_only"
+          ],
+          "title": "Permitted Llm Data",
+          "type": "string"
+        }
+      },
+      "required": [
+        "permitted_llm_data",
+        "approved_provider_and_model"
+      ],
+      "title": "LlmPolicy",
+      "type": "object"
+    },
+    "LocalReference": {
+      "additionalProperties": false,
+      "properties": {
+        "data": {
+          "enum": [
+            "synthetic",
+            "synthetic_or_approved_anonymized"
+          ],
+          "title": "Data",
+          "type": "string"
+        },
+        "engine": {
+          "const": "duckdb",
+          "title": "Engine",
+          "type": "string"
+        },
+        "interface": {
+          "const": "cli",
+          "title": "Interface",
+          "type": "string"
+        },
+        "language": {
+          "const": "python",
+          "title": "Language",
+          "type": "string"
+        }
+      },
+      "required": [
+        "language",
+        "engine",
+        "interface",
+        "data"
+      ],
+      "title": "LocalReference",
+      "type": "object"
+    },
+    "Mode": {
+      "enum": [
+        "PLAN",
+        "BUILD"
+      ],
+      "title": "Mode",
+      "type": "string"
+    },
+    "NotApplicable": {
+      "additionalProperties": false,
+      "properties": {
+        "justification": {
+          "minLength": 1,
+          "title": "Justification",
+          "type": "string"
+        },
+        "kind": {
+          "const": "NOT_APPLICABLE",
+          "default": "NOT_APPLICABLE",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "justification"
+      ],
+      "title": "NotApplicable",
+      "type": "object"
+    },
+    "Operational": {
+      "additionalProperties": false,
+      "description": "The only section the environment may override (see ``ENV_OVERRIDES``).",
+      "properties": {
+        "artifacts_dir": {
+          "default": "artifacts",
+          "title": "Artifacts Dir",
+          "type": "string"
+        },
+        "log_level": {
+          "default": "INFO",
+          "enum": [
+            "DEBUG",
+            "INFO",
+            "WARNING",
+            "ERROR"
+          ],
+          "title": "Log Level",
+          "type": "string"
+        },
+        "state_dir": {
+          "default": "state",
+          "title": "State Dir",
+          "type": "string"
+        }
+      },
+      "title": "Operational",
+      "type": "object"
+    },
+    "Production": {
+      "additionalProperties": false,
+      "properties": {
+        "catalogs": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Catalogs"
+        },
+        "cloud": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Cloud"
+        },
+        "compute": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Compute"
+        },
+        "dev_workspace": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Dev Workspace"
+        },
+        "multi_statement_transactions": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Multi Statement Transactions"
+        },
+        "orchestrator": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Orchestrator"
+        },
+        "platform": {
+          "const": "databricks",
+          "title": "Platform",
+          "type": "string"
+        },
+        "sql_dialect": {
+          "const": "databricks",
+          "title": "Sql Dialect",
+          "type": "string"
+        },
+        "unity_catalog": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Unity Catalog"
+        }
+      },
+      "required": [
+        "platform",
+        "sql_dialect",
+        "unity_catalog",
+        "cloud",
+        "compute",
+        "multi_statement_transactions",
+        "dev_workspace",
+        "catalogs",
+        "orchestrator"
+      ],
+      "title": "Production",
+      "type": "object"
+    },
+    "Semantics": {
+      "additionalProperties": false,
+      "properties": {
+        "authoritative_definition_policy": {
+          "$ref": "#/$defs/AuthorityPolicy"
+        },
+        "base_currency": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Base Currency"
+        },
+        "business_timezone": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Business Timezone"
+        },
+        "excel_formula_rank": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Excel Formula Rank"
+        },
+        "fiscal_calendar": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Fiscal Calendar"
+        },
+        "fx_policy": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Fx Policy"
+        },
+        "incomplete_period_policy": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Incomplete Period Policy"
+        },
+        "period_bounds": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Period Bounds"
+        },
+        "restatement_policy": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Restatement Policy"
+        },
+        "tolerances": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Tolerances"
+        },
+        "translation_rules_confirmed": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Translation Rules Confirmed"
+        }
+      },
+      "required": [
+        "authoritative_definition_policy",
+        "excel_formula_rank",
+        "translation_rules_confirmed",
+        "business_timezone",
+        "fiscal_calendar",
+        "period_bounds",
+        "incomplete_period_policy",
+        "base_currency",
+        "fx_policy",
+        "restatement_policy",
+        "tolerances"
+      ],
+      "title": "Semantics",
+      "type": "object"
+    },
+    "Sources": {
+      "additionalProperties": false,
+      "properties": {
+        "access_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Access Path"
+        },
+        "change_capture": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Change Capture"
+        },
+        "delete_representation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Delete Representation"
+        },
+        "engine": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Engine"
+        },
+        "location": {
+          "const": "cloud_database",
+          "title": "Location",
+          "type": "string"
+        },
+        "nonprod_copy_available": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Nonprod Copy Available"
+        },
+        "owners": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Owners"
+        },
+        "timestamp_storage": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Timestamp Storage"
+        }
+      },
+      "required": [
+        "location",
+        "engine",
+        "access_path",
+        "change_capture",
+        "delete_representation",
+        "timestamp_storage",
+        "nonprod_copy_available",
+        "owners"
+      ],
+      "title": "Sources",
+      "type": "object"
+    },
+    "Unknown": {
+      "additionalProperties": false,
+      "properties": {
+        "issue_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Issue Id"
+        },
+        "kind": {
+          "const": "UNKNOWN",
+          "default": "UNKNOWN",
+          "title": "Kind",
+          "type": "string"
+        },
+        "question": {
+          "anyOf": [
+            {
+              "pattern": "^Q-[0-9]{2}[a-z]?$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Question"
+        },
+        "reason": {
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "reason"
+      ],
+      "title": "Unknown",
+      "type": "object"
+    },
+    "Workload": {
+      "additionalProperties": false,
+      "properties": {
+        "data_volumes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Data Volumes"
+        },
+        "history_required": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "History Required"
+        },
+        "latency_target": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Latency Target"
+        },
+        "metric_count": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Metric Count"
+        },
+        "refresh_cadence": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/Unknown"
+            },
+            {
+              "$ref": "#/$defs/NotApplicable"
+            }
+          ],
+          "title": "Refresh Cadence"
+        }
+      },
+      "required": [
+        "metric_count",
+        "data_volumes",
+        "refresh_cadence",
+        "latency_target",
+        "history_required"
+      ],
+      "title": "Workload",
+      "type": "object"
+    }
+  },
+  "$id": "metrics_pipeline_harness/project_config.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "access": {
+      "$ref": "#/$defs/Access"
+    },
+    "approvals": {
+      "$ref": "#/$defs/Approvals"
+    },
+    "decisions": {
+      "items": {
+        "$ref": "#/$defs/Decision"
+      },
+      "title": "Decisions",
+      "type": "array"
+    },
+    "governance": {
+      "$ref": "#/$defs/Governance"
+    },
+    "inputs": {
+      "$ref": "#/$defs/Inputs"
+    },
+    "llm": {
+      "$ref": "#/$defs/LlmPolicy"
+    },
+    "local_reference": {
+      "$ref": "#/$defs/LocalReference"
+    },
+    "mode": {
+      "$ref": "#/$defs/Mode"
+    },
+    "operational": {
+      "$ref": "#/$defs/Operational",
+      "default": {
+        "artifacts_dir": "artifacts",
+        "log_level": "INFO",
+        "state_dir": "state"
+      }
+    },
+    "production": {
+      "$ref": "#/$defs/Production"
+    },
+    "project_name": {
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "title": "Project Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "project_config/1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "semantics": {
+      "$ref": "#/$defs/Semantics"
+    },
+    "sources": {
+      "$ref": "#/$defs/Sources"
+    },
+    "workload": {
+      "$ref": "#/$defs/Workload"
+    }
+  },
+  "required": [
+    "schema_version",
+    "project_name",
+    "mode",
+    "decisions",
+    "inputs",
+    "local_reference",
+    "llm",
+    "approvals",
+    "access",
+    "production",
+    "semantics",
+    "sources",
+    "workload",
+    "governance"
+  ],
+  "title": "ProjectConfig",
+  "type": "object"
+}

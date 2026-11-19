@@ -1,0 +1,2 @@
+txn_id,account_id,status,amount,currency,event_ts,txn_date,source_seq,op
+T001,000123,completed ,100.00,CAD,2026-03-07 10:00:00,2026-03-07,1,I

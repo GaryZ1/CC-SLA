@@ -1,0 +1,11 @@
+variant,metric,business_date,account_id,expected,note
+pending_status,MET-0003,2026-03-07,000123,1/4 = 0.25000000000000000,PENDING counted in the denominator; DQ-STS-01 warns
+pending_status,MET-0001,2026-03-07,000123,1,PENDING is not COMPLETED
+non_cad,MET-0001,2026-03-09,000456,1,USD row counted as the code does
+non_cad,MET-0002,,,EXCLUDED,DQ-CCY-01 fails; MET-0002 dropped from the release bundle
+dst_gap,MET-0001,2026-03-08,000456,3,02:30 kept as stored; dated 2026-03-08
+dst_gap,MET-0002,2026-03-08,000456,330.50,250.00 + 75.50 + 5.00
+seq_conflict,MET-0001,2026-03-07,000123,1,both T002 seq 2 versions quarantined CDC_SEQUENCE_CONFLICT; T002 keeps its last accepted state (none)
+lowercase_status,MET-0001,2026-03-07,000123,1,'completed ' equals COMPLETED under TR-03
+lowercase_status,MET-0003,2026-03-07,000123,1/3 = 0.33333333333333333,unchanged from E1
+seq_conflict,MET-0003,2026-03-07,000123,1/2 = 0.50000000000000000,"derived (not in plan §10.6): T002 quarantined so the denominator is T001+T003; the quarantine impact check (plan §5.2) must block MET-0003 release"

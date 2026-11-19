@@ -1,0 +1,5 @@
+variant: dst_gap
+base: windows/window_1
+table: core_txn_changes
+operation: append
+tests: "02:30 on 2026-03-08 never happened in America/Toronto; kept as stored and dated 2026-03-08 (MS-08)"

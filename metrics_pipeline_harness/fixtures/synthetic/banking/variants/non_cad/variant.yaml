@@ -1,0 +1,5 @@
+variant: non_cad
+base: windows/window_1
+table: core_txn_changes
+operation: append
+tests: "Row kept (code counts it); guard DQ-CCY-01 fails and drops MET-0002 from the release (MS-11)"

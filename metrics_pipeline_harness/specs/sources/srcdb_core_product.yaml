@@ -1,0 +1,19 @@
+schema_version: source_contract/1.0.0
+source_id: SRCDB.core.product
+evidence_status: SYNTHETIC
+engine: {kind: UNKNOWN, reason: "Synthetic SQL Server-family stand-in", question: Q-14}
+owner: {kind: UNKNOWN, reason: "synthetic example", question: Q-06}
+delivery_mode: SNAPSHOT
+grain: [product_code]
+business_keys: [product_code]
+ordering: {kind: NOT_APPLICABLE, justification: "Full snapshot per extraction"}
+delete_representation: "Absence from the snapshot"
+event_timestamp: {kind: NOT_APPLICABLE, justification: "Reference data without event time"}
+update_timestamp: {kind: UNKNOWN, reason: "No updated-at column in the synthetic table", question: Q-15}
+history_available: "None at source; Bronze keeps every snapshot"
+extraction_boundary: "Full snapshot"
+fixture: fixtures/synthetic/banking/windows/window_1/core_product.csv
+columns:
+  - {name: product_code,     logical_type: TEXT, nullable: false, classification: INTERNAL}
+  - {name: product_name,     logical_type: TEXT, nullable: false, classification: INTERNAL, meaning: "Type 1 attribute in dim_product"}
+  - {name: product_category, logical_type: TEXT, nullable: false, classification: INTERNAL, meaning: "Type 1 attribute in dim_product"}
