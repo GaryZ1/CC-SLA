@@ -1,0 +1,23 @@
+schema_version: source_contract/1.0.0
+source_id: SRCDB.core.account_product_hist
+evidence_status: SYNTHETIC
+engine: {kind: UNKNOWN, reason: "Synthetic SQL Server-family stand-in", question: Q-14}
+owner: {kind: UNKNOWN, reason: "synthetic example", question: Q-06}
+delivery_mode: CDC
+grain: [account_id, valid_from]          # one row per product/branch assignment period start
+business_keys: [account_id, valid_from]
+ordering: "source_seq strictly increasing"
+delete_representation: "op = 'D' rows in the change table"
+event_timestamp: valid_from
+update_timestamp: source_seq
+history_available: "Full assignment history retained at source (synthetic)"
+extraction_boundary: "Window (lower, upper] on source_seq"
+fixture: fixtures/synthetic/banking/windows/window_1/core_account_product_hist.csv
+columns:
+  - {name: account_id,   logical_type: TEXT,          nullable: false, classification: CONFIDENTIAL, meaning: "Leading zeros are significant"}
+  - {name: valid_from,   logical_type: TIMESTAMP_NTZ, nullable: false, classification: INTERNAL,
+     timezone: "local wall time, America/Toronto, no offset (synthetic; Q-16)", meaning: "Inclusive start; the next row's valid_from is the exclusive end"}
+  - {name: product_code, logical_type: TEXT,          nullable: false, classification: INTERNAL}
+  - {name: branch_code,  logical_type: TEXT,          nullable: false, classification: INTERNAL, meaning: "Leading zeros are significant"}
+  - {name: source_seq,   logical_type: BIGINT,        nullable: false, classification: INTERNAL}
+  - {name: op,           logical_type: TEXT,          nullable: false, domain: [I, U, D], classification: INTERNAL}

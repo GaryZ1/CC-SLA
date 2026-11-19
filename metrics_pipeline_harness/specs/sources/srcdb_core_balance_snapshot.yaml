@@ -1,0 +1,24 @@
+schema_version: source_contract/1.0.0
+source_id: SRCDB.core.balance_snapshot
+evidence_status: SYNTHETIC
+engine: {kind: UNKNOWN, reason: "Synthetic SQL Server-family stand-in", question: Q-14}
+owner: {kind: UNKNOWN, reason: "synthetic example", question: Q-06}
+delivery_mode: APPEND
+grain: [account_id, as_of_ts]
+business_keys: [account_id, as_of_ts]
+ordering: "source_seq strictly increasing; ties on as_of_ts broken by source_seq (TR-05)"
+delete_representation: {kind: UNKNOWN, reason: "Not observed in the synthetic source", question: Q-15}
+event_timestamp: as_of_ts
+update_timestamp: source_seq
+history_available: "All snapshots retained at source (synthetic)"
+extraction_boundary: "Window (lower, upper] on source_seq"
+fixture: fixtures/synthetic/banking/windows/window_1/core_balance_snapshot.csv
+columns:
+  - {name: account_id,     logical_type: TEXT,            nullable: false, classification: CONFIDENTIAL, meaning: "Leading zeros are significant"}
+  - {name: as_of_ts,       logical_type: TIMESTAMP_NTZ,   nullable: false, classification: INTERNAL,
+     timezone: "local wall time, America/Toronto, no offset (synthetic; Q-16)"}
+  - {name: ledger_balance, logical_type: "DECIMAL(18,2)", nullable: true,  classification: CONFIDENTIAL,
+     meaning: "NULL snapshots occur; the legacy pandas .last() skips them"}
+  - {name: currency,       logical_type: TEXT,            nullable: false, classification: INTERNAL, observed_values: [CAD]}
+  - {name: source_seq,     logical_type: BIGINT,          nullable: false, classification: INTERNAL}
+  - {name: op,             logical_type: TEXT,            nullable: false, domain: [I, U, D], classification: INTERNAL}

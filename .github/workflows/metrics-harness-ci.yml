@@ -1,0 +1,51 @@
+# Build and test only. There is no deploy job: deployment is a request to the protected controller,
+# which verifies approvals and holds the credentials (plan §8.9, §12.1).
+name: metrics-harness-ci
+
+on:
+  push:
+    paths: ["metrics_pipeline_harness/**", ".github/workflows/metrics-harness-ci.yml"]
+  pull_request:
+    paths: ["metrics_pipeline_harness/**", ".github/workflows/metrics-harness-ci.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: metrics_pipeline_harness
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.11.32"
+      - name: Install from the lockfile only
+        run: uv sync --locked
+      - name: Version
+        run: uv run harness --version
+      - name: Lint
+        run: uv run ruff check .
+      - name: Type check
+        run: uv run mypy --strict src
+      - name: Synthetic workbook regenerates byte-identically
+        run: uv run python fixtures/synthetic/banking/make_workbook.py --verify
+      - name: JSON Schemas are current
+        run: uv run harness export-schemas --check
+      - name: Config is valid
+        run: uv run harness config check
+      - name: Tests
+        run: uv run pytest --junitxml=reports/tests/junit.xml
+      - name: Extract the synthetic workbook
+        run: uv run harness extract fixtures/synthetic/banking/SYNTHETIC_retail_kpi_inventory.xlsx --mapping config/column_mapping.yaml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: harness-reports
+          path: |
+            metrics_pipeline_harness/reports/tests/junit.xml
+            metrics_pipeline_harness/artifacts/runs/
+          if-no-files-found: ignore

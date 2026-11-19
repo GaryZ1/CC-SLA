@@ -1,0 +1,4 @@
+account_id,valid_from,product_code,branch_code,source_seq,op
+000123,2026-01-01 00:00:00,CHQ-BASIC,0042,1,I
+000123,2026-03-09 00:00:00,CHQ-PLUS,0042,2,I
+000456,2026-01-01 00:00:00,SAV-HIGH,0042,3,I

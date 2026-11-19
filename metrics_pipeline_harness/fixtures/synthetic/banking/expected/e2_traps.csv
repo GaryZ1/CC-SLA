@@ -1,0 +1,5 @@
+trap,wrong_result,correct_result,caught_by
+average_of_daily_cell_rates,0.8333333333333333,5/7 = 0.71428571428571429,MS-03
+product_from_current_account_version,CHQ-PLUS 3 txns / 200.00; CHQ-BASIC 0,CHQ-BASIC 2 / 140.00; CHQ-PLUS 1 / 60.00,DI-09
+english_literal_denominator_pending_status,2026-03-07 000123: 1/3,1/4 = 0.25000000000000000 (PENDING counts),MS-12
+case_sensitive_comparison_lowercase_status,2026-03-07 count 0,count 1 (TR-03),MS-14

@@ -1,0 +1,21 @@
+# Proposed defaults (plan §4.3). Every value is configuration and needs owner agreement for production.
+schema_version: ingest_limits/1.0.0
+limits:
+  max_file_bytes: 52428800            # 50 MiB
+  max_uncompressed_bytes: 524288000   # 500 MiB across all zip entries
+  max_zip_entries: 10000
+  max_compression_ratio: 100          # per entry; guards against zip bombs
+  max_sheets: 200
+  max_rows_per_sheet: 200000
+  max_columns_per_sheet: 512
+  max_cell_chars: 32767               # Excel's documented cell text limit
+  parse_timeout_seconds: 120          # subprocess wall clock
+  parse_memory_mb: 2048               # RLIMIT_AS in the parse subprocess on Linux; container/cgroup in CI
+inclusion:
+  hidden_sheets: extract_and_flag     # extract_and_flag | exclude_and_report
+  very_hidden_sheets: extract_and_flag
+  hidden_rows: extract_and_flag       # flagged rows become EXTRACTED but are not proposed until an owner confirms
+  hidden_columns: extract_and_flag
+  comments: extract                   # comments are evidence, never instructions
+  hyperlinks: record_target_only      # never fetched
+  external_links: record_only         # never refreshed

@@ -1,0 +1,23 @@
+# Owner roster (P0-03). Roles come from plan §1.5; people and due dates are not yet named.
+# Acceptance for P0-03 needs a named person and a due date on every question: fill these in.
+schema_version: owners/1.0.0
+roles:
+  platform_admin:          {person: UNKNOWN, contact: UNKNOWN}
+  metrics_governance_lead: {person: UNKNOWN, contact: UNKNOWN}
+  finance_metric_owners:   {person: UNKNOWN, contact: UNKNOWN}
+  finance:                 {person: UNKNOWN, contact: UNKNOWN}
+  metric_owners:           {person: UNKNOWN, contact: UNKNOWN}
+  data_owners:             {person: UNKNOWN, contact: UNKNOWN}
+  dba:                     {person: UNKNOWN, contact: UNKNOWN}
+  security_data_protection: {person: UNKNOWN, contact: UNKNOWN}
+  devops_platform_admin:   {person: UNKNOWN, contact: UNKNOWN}
+  program_sponsor:         {person: UNKNOWN, contact: UNKNOWN}
+  product_owner:           {person: UNKNOWN, contact: UNKNOWN}
+  analytics_lead:          {person: UNKNOWN, contact: UNKNOWN}
+  engineering_lead:        {person: UNKNOWN, contact: UNKNOWN}
+  legal_privacy:           {person: UNKNOWN, contact: UNKNOWN}
+# Synthetic roster used only by fixtures/synthetic (never by real approvals):
+synthetic:
+  synthetic.owner.payments: Retail Payments Analytics
+  synthetic.owner.finance:  Finance Reporting
+  synthetic.owner.data_eng: Data Engineering

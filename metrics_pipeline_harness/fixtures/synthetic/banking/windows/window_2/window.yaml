@@ -1,0 +1,7 @@
+# SYNTHETIC. T001 is a re-read of an already extracted version (window overlap after a retry): same
+# bronze_record_id, not inserted again. T005 seq 9 corrects the amount 75.50 -> 57.50 (restates 2026-03-08 only).
+window_id: window_2
+extracted_at_local: "2026-03-10 18:00:00"
+tables:
+  core_txn_changes: {source_id: SRCDB.core.txn, bounds: {column: source_seq, lower_exclusive: 8, upper_inclusive: 9},
+                     overlap_reread: [{txn_id: T001, source_seq: 1}]}

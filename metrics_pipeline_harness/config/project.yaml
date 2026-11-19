@@ -1,0 +1,258 @@
+schema_version: project_config/1.0.0
+project_name: metrics_pipeline_harness
+mode: BUILD
+decisions:
+- id: D-01
+  question: Q-01
+  answer: Databricks, normal SQL
+  interpretation: Production runs on Databricks; pipelines are Databricks SQL (ANSI mode) run by a thin Python runner or Databricks
+    Jobs. Python stays in the build harness only.
+- id: D-02
+  question: Q-02
+  answer: code
+  interpretation: When English and existing code disagree the code wins, per facet; English fills only facets the code is
+    silent on; if both are silent the facet stays UNKNOWN.
+- id: D-03
+  question: Q-06
+  answer: database in cloud
+  interpretation: Source records live in a cloud-hosted database; tables the authoritative code queries are the first candidates
+    for source contracts.
+inputs:
+  workbook_paths: []
+  source_schemas:
+    kind: UNKNOWN
+    reason: No source schemas supplied
+    question: Q-14
+    issue_id: null
+  data_dictionaries:
+    kind: UNKNOWN
+    reason: No data dictionaries supplied
+    question: Q-06
+    issue_id: null
+  reference_code:
+    kind: UNKNOWN
+    reason: No reference code supplied beyond what workbooks contain
+    question: Q-12
+    issue_id: null
+  sample_data:
+    kind: UNKNOWN
+    reason: No sample data supplied; local runs use synthetic fixtures only (A-03)
+    question: Q-13
+    issue_id: null
+  repository:
+    kind: UNKNOWN
+    reason: Existing repository, pipeline framework or coding standard not identified
+    question: Q-12
+    issue_id: null
+local_reference:
+  language: python
+  engine: duckdb
+  interface: cli
+  data: synthetic_or_approved_anonymized
+llm:
+  permitted_llm_data: metadata_only_until_authorized
+  approved_provider_and_model:
+    kind: UNKNOWN
+    reason: No LLM provider or model approved; the harness runs end to end without one
+    question: Q-07
+    issue_id: null
+approvals:
+  deployment_approval_required: true
+  metric_semantics_approval_required: true
+  automatic_repair_limit: 3
+access:
+  allowed_read_sources: []
+  allowed_write_targets: []
+production:
+  platform: databricks
+  sql_dialect: databricks
+  unity_catalog:
+    kind: UNKNOWN
+    reason: Unity Catalog assumed (A-09) but not confirmed
+    question: Q-01a
+    issue_id: null
+  cloud:
+    kind: UNKNOWN
+    reason: Cloud provider not stated
+    question: Q-01a
+    issue_id: null
+  compute:
+    kind: UNKNOWN
+    reason: Serverless or pro SQL warehouse, or job compute, not stated
+    question: Q-01a
+    issue_id: null
+  multi_statement_transactions:
+    kind: UNKNOWN
+    reason: Design assumes none are available (ADR-011)
+    question: Q-01a
+    issue_id: null
+  dev_workspace:
+    kind: UNKNOWN
+    reason: No dev workspace or catalog granted to the harness yet
+    question: Q-01a
+    issue_id: null
+  catalogs:
+    kind: UNKNOWN
+    reason: Proposed mph_dev, mph_test, mph_prod (A-09); not confirmed
+    question: Q-01a
+    issue_id: null
+  orchestrator:
+    kind: UNKNOWN
+    reason: Databricks Jobs assumed (A-12)
+    question: Q-18
+    issue_id: null
+semantics:
+  authoritative_definition_policy: CODE
+  excel_formula_rank:
+    kind: UNKNOWN
+    reason: Assumed code > Excel formula > plain-English formula > definition (A-10)
+    question: Q-02a
+    issue_id: null
+  translation_rules_confirmed:
+    kind: UNKNOWN
+    reason: TR-01 to TR-05 await one-time policy approval
+    question: Q-02a
+    issue_id: null
+  business_timezone:
+    kind: UNKNOWN
+    reason: Business timezone not stated
+    question: Q-03
+    issue_id: null
+  fiscal_calendar:
+    kind: UNKNOWN
+    reason: Fiscal calendar not stated
+    question: Q-03
+    issue_id: null
+  period_bounds:
+    kind: UNKNOWN
+    reason: Inclusive or exclusive period bounds not stated
+    question: Q-03
+    issue_id: null
+  incomplete_period_policy:
+    kind: UNKNOWN
+    reason: Incomplete-period policy not stated
+    question: Q-03
+    issue_id: null
+  base_currency:
+    kind: UNKNOWN
+    reason: Base currency not stated
+    question: Q-04
+    issue_id: null
+  fx_policy:
+    kind: UNKNOWN
+    reason: FX rate source, rate type and conversion timing not stated
+    question: Q-04
+    issue_id: null
+  restatement_policy:
+    kind: UNKNOWN
+    reason: Restate history or start a new series not decided
+    question: Q-05
+    issue_id: null
+  tolerances:
+    kind: UNKNOWN
+    reason: Per-metric tolerances not set
+    question: Q-05
+    issue_id: null
+sources:
+  location: cloud_database
+  engine:
+    kind: UNKNOWN
+    reason: Database engine and product not stated
+    question: Q-14
+    issue_id: null
+  access_path:
+    kind: UNKNOWN
+    reason: Lakehouse Federation, landing pipeline or managed connector not decided
+    question: Q-15
+    issue_id: null
+  change_capture:
+    kind: UNKNOWN
+    reason: CDC, change tracking, rowversion or updated-at columns not known
+    question: Q-15
+    issue_id: null
+  delete_representation:
+    kind: UNKNOWN
+    reason: How deletes are represented is not known
+    question: Q-15
+    issue_id: null
+  timestamp_storage:
+    kind: UNKNOWN
+    reason: UTC or local wall time, with or without offset, not known
+    question: Q-16
+    issue_id: null
+  nonprod_copy_available:
+    kind: UNKNOWN
+    reason: Non-production copy of the source engine for legacy-reference runs not confirmed
+    question: Q-17
+    issue_id: null
+  owners:
+    kind: UNKNOWN
+    reason: Owners per source not named
+    question: Q-06
+    issue_id: null
+workload:
+  metric_count:
+    kind: UNKNOWN
+    reason: Metric count not stated
+    question: Q-10
+    issue_id: null
+  data_volumes:
+    kind: UNKNOWN
+    reason: Data volumes not stated
+    question: Q-10
+    issue_id: null
+  refresh_cadence:
+    kind: UNKNOWN
+    reason: Refresh cadence not stated
+    question: Q-10
+    issue_id: null
+  latency_target:
+    kind: UNKNOWN
+    reason: Latency target not stated
+    question: Q-10
+    issue_id: null
+  history_required:
+    kind: UNKNOWN
+    reason: History required not stated
+    question: Q-10
+    issue_id: null
+governance:
+  ci_platform:
+    kind: UNKNOWN
+    reason: CI/CD platform, plan and administrator not stated
+    question: Q-08
+    issue_id: null
+  approvers:
+    kind: UNKNOWN
+    reason: Metric owners, data owners, architect and release reviewers not named
+    question: Q-09
+    issue_id: null
+  gold_consumers:
+    kind: UNKNOWN
+    reason: Gold consumers and interface not stated
+    question: Q-11
+    issue_id: null
+  existing_standards:
+    kind: UNKNOWN
+    reason: Existing repository, framework or coding standard not identified
+    question: Q-12
+    issue_id: null
+  retention:
+    kind: UNKNOWN
+    reason: Retention and deletion obligations not stated
+    question: Q-13
+    issue_id: null
+  data_residency:
+    kind: UNKNOWN
+    reason: Data residency not stated
+    question: Q-13
+    issue_id: null
+  classification:
+    kind: UNKNOWN
+    reason: Data classification not stated
+    question: Q-07
+    issue_id: null
+operational:
+  artifacts_dir: artifacts
+  state_dir: state
+  log_level: INFO

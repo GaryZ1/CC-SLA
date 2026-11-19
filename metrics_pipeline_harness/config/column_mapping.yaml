@@ -1,0 +1,29 @@
+schema_version: column_mapping/1.0.0
+defaults:
+  header_search_rows: 1-10
+  multirow_header_joiner: " / "
+  empty_values: ["", "-", "n/a", "N/A", "tbd", "TBD"]   # classified EMPTY, original kept
+  # SQL dialects tried by language detection (SQLGlot names). Detection never picks the source dialect:
+  # that comes from the source engine (A-11, Q-14).
+  code_dialect_candidates: [tsql, postgres, mysql, oracle, snowflake, databricks, duckdb]
+fields:                       # logical field -> accepted header aliases (normalized match)
+  business_id:      {aliases: ["kpi id", "metric id", "measure id", "id"], type: identifier, required: false,
+                     missing_severity: MINOR}
+  name:             {aliases: ["kpi", "metric", "measure", "metric name", "kpi name"], type: text, required: true}
+  domain:           {aliases: ["domain", "area", "business area", "subject area"], type: text, required: false}
+  definition:       {aliases: ["definition", "definition / business", "description", "business definition"], type: text, required: true}
+  formula_text:     {aliases: ["calculation", "formula", "definition / formula (plain english)", "logic"], type: text, required: false}
+  code:             {aliases: ["sql", "code", "query", "dax", "sas", "python", "implementation"], type: code, required: false,
+                     empty_severity: MINOR}
+  code_language:    {aliases: ["language", "code type"], type: text, required: false}
+  owner:            {aliases: ["owner", "business owner", "metric owner"], type: text, required: false}
+  source_reference: {aliases: ["source", "source table", "system", "data source"], type: text, required: false}
+sheets:
+  include: ["*"]
+  exclude: []                 # explicit exclusions are reported, never silent
+  overrides:
+    "Legacy":
+      header_row: 2
+      fields:
+        name: {aliases: ["measure"]}
+        code: {aliases: ["sql text"]}
